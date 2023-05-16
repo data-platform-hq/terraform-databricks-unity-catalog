@@ -1,6 +1,7 @@
 locals {
-  # Suffix to name resources names. 
-  suffix = length(var.suffix) == 0 ? "" : "-${var.suffix}"
+  # This optional suffix is added to the end of resource names. 
+  suffix                    = length(var.suffix) == 0 ? "" : "-${var.suffix}"
+  databricks_metastore_name = var.custom_databricks_metastore_name == null ? "meta-${var.project}-${var.env}-${var.location}${local.suffix}" : var.custom_databricks_metastore_name
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "this" {
@@ -23,7 +24,7 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "this" {
 resource "databricks_metastore" "this" {
   count = var.create_metastore ? 1 : 0
 
-  name          = "meta-${var.project}-${var.env}-${var.location}${local.suffix}"
+  name          = local.databricks_metastore_name
   storage_root  = format("abfss://%s@%s.dfs.core.windows.net/", azurerm_storage_data_lake_gen2_filesystem.this[0].name, var.storage_account_name)
   force_destroy = true
 }
@@ -53,7 +54,7 @@ resource "databricks_metastore_data_access" "this" {
 }
 
 resource "databricks_metastore_assignment" "this" {
-  count = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? 0 : 1
+  count = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0, !var.metastore_assignment_enabled]) ? 0 : 1
 
   workspace_id         = var.workspace_id
   metastore_id         = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id

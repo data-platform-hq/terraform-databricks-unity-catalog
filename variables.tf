@@ -73,6 +73,7 @@ variable "catalog" {
   default     = {}
 }
 
+# Metastore grants
 variable "metastore_grants" {
   type        = map(list(string))
   description = "Permissions to give on metastore to group"
@@ -85,4 +86,16 @@ variable "metastore_grants" {
     ]) : true
     error_message = "Metastore permission validation. The only possible values for permissions are: CREATE_CATALOG, CREATE_EXTERNAL_LOCATION, CREATE_SHARE, CREATE_RECIPIENT, CREATE_PROVIDER"
   }
+}
+
+variable "custom_databricks_metastore_name" {
+  type        = string
+  description = "The name to provide for your Databricks Metastore"
+  default     = null
+}
+
+variable "metastore_assignment_enabled" {
+  type        = bool
+  description = "This variable provides an ability to disable assignment of metastore if client does not have required permissions to do this automatically with terraform."
+  default     = true
 }
