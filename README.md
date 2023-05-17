@@ -1,9 +1,9 @@
-# Azure unity-catalog Terraform module
+# Azure Unity Catalog Terraform module
 Terraform module for creation Azure Unity Catalog
 
 ## Usage
 
-### below is an example of creating a unit catalog
+### below is an example of creating a Unit Catalog
 
 ```hcl
 # Prerequisite resources
