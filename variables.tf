@@ -54,11 +54,6 @@ variable "external_metastore_id" {
   }
 }
 
-variable "workspace_id" {
-  type        = string
-  description = "Id of Azure Databricks workspace"
-}
-
 variable "catalog" {
   type = map(object({
     catalog_grants     = optional(map(list(string)))

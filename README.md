@@ -8,12 +8,6 @@ Terraform module for creation Azure Unity Catalog
 ```hcl
 # Prerequisite resources
 
-# Databricks Workspace with Premium SKU
-data "azurerm_databricks_workspace" "example" {
-  name                = "example-workspace"
-  resource_group_name = "example-rg"
-}
-
 # Storage Account with ADLS Gen2
 data "azurerm_storage_account" "example" {
   name                = "example-workspace"
@@ -39,7 +33,6 @@ module "unity_catalog" {
   access_connector_id   = var.access_connector_enabled ? module.databricks_workspace.access_connector_id : null
   storage_account_id    = data.azurerm_storage_account.example.id
   storage_account_name  = data.azurerm_storage_account.example.name
-  workspace_id          = data.azurerm_databricks_workspace.workspace_id
   catalog               = local.catalog
 
   providers = {
@@ -93,7 +86,6 @@ No modules.
 | <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Storage Account Id where Unity Catalog Metastore would be provisioned | `string` | " "  |    no    |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Storage Account Name where Unity Catalog Metastore would be provisioned   | `string` | " "   |    no    |
 | <a name="input_external_metastore_id"></a> [external\_metastore\_id](#input\_external\_metastore\_id) | Unity Catalog Metastore Id that is located in separate environment. Provide this value to associate Databricks Workspace with target Metastore | `string` | " " | no |
-| <a name="input_workspace_id"></a> [workspace\_id](#input\_workspace\_id) | Id of Azure Databricks workspace  | `string` | n/a | yes |
 | <a name="input_catalog"></a> [catalog](#input\_catalog)  | Map of SQL Endpoints to be deployed in Databricks Workspace | <pre> map(object({ <br>   catalog_grants     = optional(map(list(string))) <br>   catalog_comment    = optional(string) <br>   catalog_properties = optional(map(string)) <br>   schema_name        = optional(list(string)) <br>   schema_grants      = optional(map(list(string))) <br>   schema_comment     = optional(string) <br>   schema_properties  = optional(map(string))<br>})) </pre> | {} | no |
 | <a name="input_metastore_grants"></a> [metastore\_grants](#input\_metastore\_grants) | Permissions to give on metastore to group  | `map(list(string))` | {} | no |
 | <a name="input_custom_databricks_metastore_name"></a> [custom\_databricks\_metastore\_name](#input\_custom\_databricks\_metastore\_name) | The name to provide for your Databricks Metastore | `string` | null | no |
