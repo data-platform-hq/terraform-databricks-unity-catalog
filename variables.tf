@@ -93,9 +93,3 @@ variable "custom_databricks_metastore_name" {
   description = "The name to provide for your Databricks Metastore"
   default     = null
 }
-
-variable "metastore_assignment_enabled" {
-  type        = bool
-  description = "This variable provides an ability to disable assignment of metastore if client does not have required permissions to do this automatically with terraform."
-  default     = true
-}

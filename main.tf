@@ -53,14 +53,6 @@ resource "databricks_metastore_data_access" "this" {
   is_default = true
 }
 
-resource "databricks_metastore_assignment" "this" {
-  count = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0, !var.metastore_assignment_enabled]) ? 0 : 1
-
-  workspace_id         = var.workspace_id
-  metastore_id         = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
-  default_catalog_name = "hive_metastore"
-}
-
 # Catalog
 resource "databricks_catalog" "this" {
   for_each = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? {} : var.catalog
@@ -70,8 +62,6 @@ resource "databricks_catalog" "this" {
   comment       = lookup(each.value, "catalog_comment", "default comment")
   properties    = merge(lookup(each.value, "catalog_properties", {}), { env = var.env })
   force_destroy = true
-
-  depends_on = [databricks_metastore_assignment.this[0]]
 }
 
 # Catalog grants

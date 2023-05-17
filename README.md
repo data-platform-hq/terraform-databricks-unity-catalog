@@ -75,7 +75,6 @@ No modules.
 | [databricks_metastore.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/metastore)                                          | resource |
 | [databricks_grants.metastore](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants)                                           | resource |
 | [databricks_metastore_data_access.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/metastore_data_access)                  | resource |
-| [databricks_metastore_assignment.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/metastore_assignment)                    | resource |
 | [databricks_catalog.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/catalog)                                              | resource |
 | [databricks_grants.catalog](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants)                                             | resource |
 | [databricks_schema.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/sql_endpoint)                                          | resource |
@@ -98,7 +97,7 @@ No modules.
 | <a name="input_catalog"></a> [catalog](#input\_catalog)  | Map of SQL Endpoints to be deployed in Databricks Workspace | <pre> map(object({ <br>   catalog_grants     = optional(map(list(string))) <br>   catalog_comment    = optional(string) <br>   catalog_properties = optional(map(string)) <br>   schema_name        = optional(list(string)) <br>   schema_grants      = optional(map(list(string))) <br>   schema_comment     = optional(string) <br>   schema_properties  = optional(map(string))<br>})) </pre> | {} | no |
 | <a name="input_metastore_grants"></a> [metastore\_grants](#input\_metastore\_grants) | Permissions to give on metastore to group  | `map(list(string))` | {} | no |
 | <a name="input_custom_databricks_metastore_name"></a> [custom\_databricks\_metastore\_name](#input\_custom\_databricks\_metastore\_name) | The name to provide for your Databricks Metastore | `string` | null | no |
-| <a name="input_metastore_assignment_enabled"></a> [metastore\_assignment\_enabled](#input\_metastore\_assignment\_enabled) | This variable provides an ability to disable assignment of metastore if client does not have required permissions to do this automatically with terraform. | `bool` | true | no |
+
 ## Outputs
 
 | Name                                                                       | Description                            |
