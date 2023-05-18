@@ -38,8 +38,9 @@ locals {
   catalog = {
     example_catalog = {
       catalog_grants = {
-        "example@username.com"    = ["USE_CATALOG", "USE_SCHEMA", "CREATE_SCHEMA", "CREATE_TABLE", "SELECT", "MODIFY"]
+        "example@username.com" = ["USE_CATALOG", "USE_SCHEMA", "CREATE_SCHEMA", "CREATE_TABLE", "SELECT", "MODIFY"]
       }
+      schema_name = ["raw", "refined", "data_product"]
     }
   }
 }
