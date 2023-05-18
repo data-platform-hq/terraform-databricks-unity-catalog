@@ -2,26 +2,46 @@
 Terraform module for creation Azure Unity Catalog
 
 ## Usage
-
-### below is an example of creating a Unit Catalog
-
 ```hcl
 # Prerequisite resources
 
-# Storage Account with ADLS Gen2
-data "azurerm_storage_account" "example" {
+# Configure Databricks Provider
+data "azurerm_databricks_workspace" "example" {
   name                = "example-workspace"
   resource_group_name = "example-rg"
 }
 
+provider "databricks" {
+  alias                       = "main"
+  host                        = data.databricks_workspace.example.workspace_url
+  azure_workspace_resource_id = data.databricks_workspace.example.id
+}
+
+# Databricks Access Connector (managed identity)
+resource "azurerm_databricks_access_connector" "example" {
+  name                = "example-resource"
+  resource_group_name = "example-rg"
+  location            = "eastus"
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+# Storage Account
+data "azurerm_storage_account" "example" {
+  name                = "example-storage-account"
+  resource_group_name = "example-rg"
+}
+
 locals {
-    catalog = {
-        example_catalog = {
-            catalog_grants = {
-                "example@username.com"    = ["USE_CATALOG", "USE_SCHEMA", "CREATE_SCHEMA", "CREATE_TABLE", "SELECT", "MODIFY"]
-            }
-        }
+  catalog = {
+    example_catalog = {
+      catalog_grants = {
+        "example@username.com"    = ["USE_CATALOG", "USE_SCHEMA", "CREATE_SCHEMA", "CREATE_TABLE", "SELECT", "MODIFY"]
+      }
     }
+  }
 }
 
 module "unity_catalog" {
@@ -30,7 +50,7 @@ module "unity_catalog" {
   project               = "datahq"
   env                   = "example"
   location              = "eastus"
-  access_connector_id   = var.access_connector_enabled ? module.databricks_workspace.access_connector_id : null
+  access_connector_id   = azurerm_databricks_access_connector.example.id
   storage_account_id    = data.azurerm_storage_account.example.id
   storage_account_name  = data.azurerm_storage_account.example.name
   catalog               = local.catalog
@@ -86,7 +106,7 @@ No modules.
 | <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Storage Account Id where Unity Catalog Metastore would be provisioned | `string` | " "  |    no    |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Storage Account Name where Unity Catalog Metastore would be provisioned   | `string` | " "   |    no    |
 | <a name="input_external_metastore_id"></a> [external\_metastore\_id](#input\_external\_metastore\_id) | Unity Catalog Metastore Id that is located in separate environment. Provide this value to associate Databricks Workspace with target Metastore | `string` | " " | no |
-| <a name="input_catalog"></a> [catalog](#input\_catalog)  | Map of SQL Endpoints to be deployed in Databricks Workspace | <pre> map(object({ <br>   catalog_grants     = optional(map(list(string))) <br>   catalog_comment    = optional(string) <br>   catalog_properties = optional(map(string)) <br>   schema_name        = optional(list(string)) <br>   schema_grants      = optional(map(list(string))) <br>   schema_comment     = optional(string) <br>   schema_properties  = optional(map(string))<br>})) </pre> | {} | no |
+| <a name="input_catalog"></a> [catalog](#input\_catalog)  | Map of objects which parameters refers to certain catalog and schema attributes | <pre> map(object({ <br>   catalog_grants     = optional(map(list(string))) <br>   catalog_comment    = optional(string) <br>   catalog_properties = optional(map(string)) <br>   schema_name        = optional(list(string)) <br>   schema_grants      = optional(map(list(string))) <br>   schema_comment     = optional(string) <br>   schema_properties  = optional(map(string))<br>})) </pre> | {} | no |
 | <a name="input_metastore_grants"></a> [metastore\_grants](#input\_metastore\_grants) | Permissions to give on metastore to group  | `map(list(string))` | {} | no |
 | <a name="input_custom_databricks_metastore_name"></a> [custom\_databricks\_metastore\_name](#input\_custom\_databricks\_metastore\_name) | The name to provide for your Databricks Metastore | `string` | null | no |
 
