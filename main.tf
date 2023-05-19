@@ -1,5 +1,5 @@
 locals {
-  # This optional suffix is added to the end of resource names. 
+  # This optional suffix is added to the end of resource names.
   suffix = length(var.suffix) == 0 ? "" : "-${var.suffix}"
 
   databricks_metastore_name = var.custom_databricks_metastore_name == null ? "meta-${var.project}-${var.env}-${var.location}${local.suffix}" : var.custom_databricks_metastore_name
@@ -54,6 +54,14 @@ resource "databricks_metastore_data_access" "this" {
     access_connector_id = var.access_connector_id
   }
   is_default = true
+}
+
+resource "databricks_metastore_assignment" "this" {
+  count = anytrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? 0 : 1
+
+  workspace_id         = var.workspace_id
+  metastore_id         = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
+  default_catalog_name = "hive_metastore"
 }
 
 # Catalog
