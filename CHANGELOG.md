@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.3...v1.0.4) (2023-05-19)
+
+
+### Bug Fixes
+
+* metastore grants update ([cf48db8](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/cf48db80c558b1ea8d83bb14496fd887af774527))
+
 ## [1.0.3](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.2...v1.0.3) (2023-05-19)
 
 
