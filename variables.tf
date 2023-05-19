@@ -91,7 +91,6 @@ variable "custom_databricks_metastore_name" {
 
 variable "custom_databricks_metastore_container_name" {
   type        = string
-  description = "The name to provide for your Databricks Metastore"
+  description = "The name to provide for your Databricks Metastore Container"
   default     = null
 }
-
