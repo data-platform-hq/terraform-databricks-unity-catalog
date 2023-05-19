@@ -57,7 +57,7 @@ resource "databricks_metastore_data_access" "this" {
 }
 
 resource "databricks_metastore_assignment" "this" {
-  count = anytrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? 0 : 1
+  count = anytrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? 1 : 0
 
   workspace_id         = var.workspace_id
   metastore_id         = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
@@ -66,7 +66,7 @@ resource "databricks_metastore_assignment" "this" {
 
 # Catalog
 resource "databricks_catalog" "this" {
-  for_each = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? {} : var.catalog
+  for_each = anytrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? var.catalog : {}
 
   metastore_id  = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
   name          = each.key
@@ -77,10 +77,10 @@ resource "databricks_catalog" "this" {
 
 # Catalog grants
 resource "databricks_grants" "catalog" {
-  for_each = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? {} : {
+  for_each = alltrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
     for name, params in var.catalog : name => params.catalog_grants
     if params.catalog_grants != null
-  }
+  } : {}
 
   catalog = databricks_catalog.this[each.key].name
   dynamic "grant" {
@@ -107,9 +107,9 @@ locals {
 }
 
 resource "databricks_schema" "this" {
-  for_each = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? {} : {
+  for_each = alltrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
     for entry in local.schema : "${entry.catalog}.${entry.schema}" => entry
-  }
+  } : {}
 
   catalog_name  = databricks_catalog.this[each.value.catalog].name
   name          = each.value.schema
@@ -131,9 +131,9 @@ locals {
 }
 
 resource "databricks_grants" "schema" {
-  for_each = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? {} : {
+  for_each = alltrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
     for entry in local.schema_grants : "${entry.catalog}.${entry.schema}.${entry.principal}" => entry
-  }
+  } : {}
 
   schema = databricks_schema.this["${each.value.catalog}.${each.value.schema}"].id
   grant {
