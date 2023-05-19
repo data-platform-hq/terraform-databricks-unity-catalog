@@ -19,6 +19,11 @@ variable "suffix" {
   default     = ""
 }
 
+variable "workspace_id" {
+  type        = string
+  description = "Id of Azure Databricks workspace"
+}
+
 # Unity Catalog variables
 variable "create_metastore" {
   type        = bool
