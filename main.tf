@@ -1,9 +1,9 @@
 locals {
   # This optional suffix is added to the end of resource names. 
-  suffix                    = length(var.suffix) == 0 ? "" : "-${var.suffix}"
-  
+  suffix = length(var.suffix) == 0 ? "" : "-${var.suffix}"
+
   databricks_metastore_name = var.custom_databricks_metastore_name == null ? "meta-${var.project}-${var.env}-${var.location}${local.suffix}" : var.custom_databricks_metastore_name
-  
+
   databricks_metastore_container_name = var.custom_databricks_metastore_container_name == null ? "meta-${var.project}-${var.env}" : var.custom_databricks_metastore_container_name
 }
 
