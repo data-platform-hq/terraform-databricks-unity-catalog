@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.1...v1.0.2) (2023-05-19)
+
+
+### Bug Fixes
+
+* workspace assignment ([2838782](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/2838782b5fba7d8b021b0421f404cf3d8bd9d437))
+
 ## [1.0.1](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.0...v1.0.1) (2023-05-19)
 
 
