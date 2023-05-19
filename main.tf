@@ -10,7 +10,7 @@ locals {
 resource "azurerm_storage_data_lake_gen2_filesystem" "this" {
   count = var.create_metastore ? 1 : 0
 
-  name               = "meta-${var.project}-${var.env}"
+  name               = local.databricks_metastore_container_name
   storage_account_id = var.storage_account_id
 
   lifecycle {
