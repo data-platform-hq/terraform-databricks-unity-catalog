@@ -33,15 +33,15 @@ resource "databricks_metastore" "this" {
 }
 
 resource "databricks_grants" "metastore" {
-  for_each = alltrue([!var.create_metastore, length(var.external_metastore_id) == 0]) ? {} : {
-    for k, v in var.metastore_grants : k => v
-    if v != null
-  }
+  count = var.create_metastore ? 1 : 0
 
   metastore = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
-  grant {
-    principal  = each.key
-    privileges = each.value
+  dynamic "grant" {
+    for_each = var.metastore_grants
+    content {
+      principal  = grant.key
+      privileges = grant.value
+    }
   }
 }
 
