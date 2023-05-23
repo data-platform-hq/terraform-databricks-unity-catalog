@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.4...v1.0.5) (2023-05-23)
+
+
+### Bug Fixes
+
+* fixed condition ([a6950be](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/a6950becbb80eaeeb09dc91cd4c42114f676979c))
+
 ## [1.0.4](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.3...v1.0.4) (2023-05-19)
 
 
