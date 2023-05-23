@@ -77,7 +77,7 @@ resource "databricks_catalog" "this" {
 
 # Catalog grants
 resource "databricks_grants" "catalog" {
-  for_each = alltrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
+  for_each = anytrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
     for name, params in var.catalog : name => params.catalog_grants
     if params.catalog_grants != null
   } : {}
@@ -107,7 +107,7 @@ locals {
 }
 
 resource "databricks_schema" "this" {
-  for_each = alltrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
+  for_each = anytrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
     for entry in local.schema : "${entry.catalog}.${entry.schema}" => entry
   } : {}
 
@@ -131,7 +131,7 @@ locals {
 }
 
 resource "databricks_grants" "schema" {
-  for_each = alltrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
+  for_each = anytrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? {
     for entry in local.schema_grants : "${entry.catalog}.${entry.schema}.${entry.principal}" => entry
   } : {}
 
