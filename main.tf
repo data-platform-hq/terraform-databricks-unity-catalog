@@ -56,14 +56,6 @@ resource "databricks_metastore_data_access" "this" {
   is_default = true
 }
 
-resource "databricks_metastore_assignment" "this" {
-  count = anytrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? 1 : 0
-
-  workspace_id         = var.workspace_id
-  metastore_id         = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
-  default_catalog_name = "hive_metastore"
-}
-
 # Catalog
 resource "databricks_catalog" "this" {
   for_each = anytrue([var.create_metastore, length(var.external_metastore_id) != 0]) ? var.catalog : {}
