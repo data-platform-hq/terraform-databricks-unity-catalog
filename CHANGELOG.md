@@ -1,3 +1,11 @@
+## [1.0.6](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.5...v1.0.6) (2023-05-26)
+
+
+### Bug Fixes
+
+* removed assignment resource ([4fb6dbc](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/4fb6dbc88447dd3ec0e488547120b86fc8027abc))
+* updated variables ([f406414](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/f406414479360068151f2754d07a4941cc5acd9d))
+
 ## [1.0.5](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.4...v1.0.5) (2023-05-23)
 
 
