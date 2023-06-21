@@ -33,7 +33,7 @@ resource "databricks_metastore" "this" {
 }
 
 resource "databricks_grants" "metastore" {
-  count = var.create_metastore ? 1 : 0
+  count = alltrue([var.create_metastore, length(var.metastore_grants) != 0]) ? 1 : 0
 
   metastore = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
   dynamic "grant" {
