@@ -1,9 +1,7 @@
 locals {
   # This optional suffix is added to the end of resource names.
-  suffix = length(var.suffix) == 0 ? "" : "-${var.suffix}"
-
-  databricks_metastore_name = var.custom_databricks_metastore_name == null ? "meta-${var.project}-${var.env}-${var.location}${local.suffix}" : var.custom_databricks_metastore_name
-
+  suffix                              = length(var.suffix) == 0 ? "" : "-${var.suffix}"
+  databricks_metastore_name           = var.custom_databricks_metastore_name == null ? "meta-${var.project}-${var.env}-${var.location}${local.suffix}" : var.custom_databricks_metastore_name
   databricks_metastore_container_name = var.custom_databricks_metastore_container_name == null ? "meta-${var.project}-${var.env}" : var.custom_databricks_metastore_container_name
 }
 
@@ -21,7 +19,6 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "this" {
       error_message = "To create Metastore in a Region it is required to provide proper values for these variables: access_connector_id, storage_account_id, storage_account_name"
     }
   }
-
 }
 
 resource "databricks_metastore" "this" {
@@ -33,7 +30,7 @@ resource "databricks_metastore" "this" {
 }
 
 resource "databricks_grants" "metastore" {
-  count = var.create_metastore ? 1 : 0
+  count = length(var.metastore_grants) != 0 ? 1 : 0
 
   metastore = length(var.external_metastore_id) == 0 ? databricks_metastore.this[0].id : var.external_metastore_id
   dynamic "grant" {
