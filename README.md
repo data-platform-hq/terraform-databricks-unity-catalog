@@ -1,5 +1,5 @@
-# Azure Unity Catalog Terraform module
-Terraform module for creation Azure Unity Catalog
+# Databricks Unity Catalog Terraform module
+Terraform module for creation Databricks Unity Catalog
 
 ## Usage
 This module manages Unity Catalog resources like Catalogs, Schemas. In addition, it is possible to manage permissions within Metastore, Catalog and Schemas.
