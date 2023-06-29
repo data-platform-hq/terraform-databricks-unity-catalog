@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.7...v1.1.0) (2023-06-29)
+
+
+### Features
+
+* removed metastore creation resources ([4a77af2](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/4a77af2139a58b07c75880173f559bd417510f17))
+
 ## [1.0.7](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.6...v1.0.7) (2023-06-21)
 
 
