@@ -70,14 +70,14 @@ module "unity_catalog" {
 | Name                                                                      | Version   |
 | ------------------------------------------------------------------------- | --------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform)    | >= 1.0.0  |
-| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.14.2  |
+| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.14.2 |
 
 
 ## Providers
 
 | Name                                                          | Version   |
 | ------------------------------------------------------------- | --------- |
-| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | 1.14.2   |
+| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | 1.14.2 |
 
 
 ## Modules
@@ -102,7 +102,7 @@ No modules.
 | <a name="input_env"></a> [env](#input\_project)| Environment name | `string`| n/a |   yes    |
 | <a name="input_metastore_id"></a> [metastore\_id](#input\_metastore\_id)| Unity Catalog Metastore Id that is located in separate environment. Provide this value to associate Databricks Workspace with target Metastore| `string` | n/a |   yes    |
 | <a name="input_metastore_grants"></a> [metastore\_grants](#input\_metastore\_grants)| Permissions to give on metastore to group | <pre>set(object({<br>  principal  = string<br>  privileges = list(string)<br>}))</pre>| [] |   no    |
-| <a name="input_catalog"></a> [catalog](#input\_catalog)| Map of catalog name and its parameters | <pre>map(object({<br>  catalog_grants     = optional(map(list(string)))<br>  catalog_comment    = optional(string)<br>  catalog_properties = optional(map(string))<br>  schema_name        = optional(list(string))<br>  schema_grants      = optional(map(list(string)))<br>  schema_comment     = optional(string)<br>  schema_properties  = optional(map(string))<br>}))</pre>|{} |  no  |
+| <a name="input_catalog"></a> [catalog](#input\_catalog)| Map of catalog name and its parameters | <pre>map(object({<br>  catalog_grants     = optional(map(list(string)))<br>  catalog_comment    = optional(string)<br>  catalog_properties = optional(map(string))<br>  schema_name        = optional(list(string))<br>  schema_grants      = optional(map(list(string)))<br>  schema_comment     = optional(string)<br>  schema_properties  = optional(map(string))<br>  catalog_owner      = optional(string)<br>  schema_owner       = optional(string)<br>}))</pre>|{} |  no  |
 
 
 ## Outputs

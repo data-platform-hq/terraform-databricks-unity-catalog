@@ -25,6 +25,7 @@ resource "databricks_catalog" "this" {
 
   metastore_id  = var.metastore_id
   name          = each.key
+  owner         = each.value.catalog_owner
   comment       = lookup(each.value, "catalog_comment", "default comment")
   properties    = merge(lookup(each.value, "catalog_properties", {}), { env = var.env })
   force_destroy = true
@@ -56,6 +57,7 @@ locals {
         schema     = schema,
         comment    = lookup(params, "schema_comment", "default comment"),
         properties = lookup(params, "schema_properties", {})
+        owner      = lookup(params, "schema_owner", null)
       }
     ] if params.schema_name != null
   ])
@@ -68,6 +70,7 @@ resource "databricks_schema" "this" {
 
   catalog_name  = databricks_catalog.this[each.value.catalog].name
   name          = each.value.schema
+  owner         = each.value.owner
   comment       = each.value.comment
   properties    = merge(each.value.properties, { env = var.env })
   force_destroy = true
