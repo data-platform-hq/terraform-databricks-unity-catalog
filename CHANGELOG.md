@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.1.0...v1.1.1) (2023-09-02)
+
+
+### Bug Fixes
+
+* added owner parameters to catalog and schema ([013756e](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/013756efbba6270a02b09b49c239b2d58ed55f8b))
+
 # [1.1.0](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.0.7...v1.1.0) (2023-06-29)
 
 
