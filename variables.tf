@@ -26,10 +26,12 @@ variable "metastore_grants" {
 variable "catalog" {
   type = map(object({
     catalog_grants     = optional(map(list(string)))
+    catalog_owner      = optional(string)
     catalog_comment    = optional(string)
     catalog_properties = optional(map(string))
     schema_name        = optional(list(string))
     schema_grants      = optional(map(list(string)))
+    schema_owner       = optional(string)
     schema_comment     = optional(string)
     schema_properties  = optional(map(string))
   }))
