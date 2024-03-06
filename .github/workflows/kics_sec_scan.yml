@@ -1,0 +1,31 @@
+name: Run security KICS scaner
+
+on: 
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  kics:
+    name: Run security KICS scaner
+    runs-on: "ubuntu-latest"
+
+    steps:
+    - name: Checkout code repo
+      uses: actions/checkout@v3
+
+    - name: Run security KICS scaner
+      uses: checkmarx/kics-github-action@v1.7.0
+      with:
+        path: .
+        output_path: myResults/
+        output_formats: 'sarif'
+        enable_comments: true
+        enable_annotations: true
+        ignore_on_exit: results
+       
+    # TBD    
+    # - name: Upload SARIF file
+    #   uses: github/codeql-action/upload-sarif@v1
+    #   with:
+    #     sarif_file: myResults/results.sarif
