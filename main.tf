@@ -23,12 +23,14 @@ resource "databricks_grants" "metastore" {
 resource "databricks_catalog" "this" {
   for_each = var.catalog
 
-  metastore_id  = var.metastore_id
-  name          = each.key
-  owner         = each.value.catalog_owner
-  comment       = lookup(each.value, "catalog_comment", "default comment")
-  properties    = merge(lookup(each.value, "catalog_properties", {}), { env = var.env })
-  force_destroy = true
+  metastore_id   = var.metastore_id
+  name           = each.key
+  owner          = each.value.catalog_owner
+  storage_root   = each.value.catalog_storage_root
+  isolation_mode = each.value.catalog_isolation_mode
+  comment        = lookup(each.value, "catalog_comment", "default comment")
+  properties     = lookup(each.value, "catalog_properties", {})
+  force_destroy  = true
 }
 
 # Catalog grants
@@ -72,7 +74,7 @@ resource "databricks_schema" "this" {
   name          = each.value.schema
   owner         = each.value.owner
   comment       = each.value.comment
-  properties    = merge(each.value.properties, { env = var.env })
+  properties    = each.value.properties
   force_destroy = true
 }
 
@@ -98,4 +100,15 @@ resource "databricks_grants" "schema" {
     principal  = each.value.principal
     privileges = each.value.permission
   }
+}
+
+# ISOLATED Catalogs binding
+resource "databricks_catalog_workspace_binding" "this" {
+  for_each = {
+    for object in var.isolated_unmanaged_catalog_bindings : object.catalog_name => object
+  }
+
+  workspace_id   = var.workspace_id
+  securable_name = each.value.catalog_name
+  binding_type   = each.value.binding_type
 }
