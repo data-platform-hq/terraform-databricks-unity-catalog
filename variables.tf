@@ -50,4 +50,3 @@ variable "workspace_id" {
   description = "ID of the target workspace."
   default     = null
 }
-
