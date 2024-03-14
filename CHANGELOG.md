@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.1.1...v1.2.0) (2024-03-14)
+
+
+### Bug Fixes
+
+* added security KICS scan action ([168ab93](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/168ab9348cd5285c022422c72fc7ee28891820d8))
+* replaced pre-commit repo docs creation/update by GH Actions ([0285175](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/0285175bc71ef3e736e8376eb46c89ca54f3e832))
+
+
+### Features
+
+* workspace bindings support; catalog's managed locations support ([868ce29](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/868ce29c04b29e30ecc077228f70fdecf5992433))
+
 ## [1.1.1](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.1.0...v1.1.1) (2023-09-02)
 
 
