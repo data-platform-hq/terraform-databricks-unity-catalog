@@ -70,13 +70,13 @@ module "unity_catalog" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
-| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >=1.49.1 |
+| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | ~>1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | >=1.49.1 |
+| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | ~>1.0 |
 
 ## Modules
 
@@ -87,11 +87,11 @@ No modules.
 | Name | Type |
 |------|------|
 | [databricks_catalog.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/catalog) | resource |
-| [databricks_catalog_workspace_binding.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/catalog_workspace_binding) | resource |
 | [databricks_grants.catalog](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_grants.metastore](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_grants.schema](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_schema.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/schema) | resource |
+| [databricks_workspace_binding.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/workspace_binding) | resource |
 
 ## Inputs
 
