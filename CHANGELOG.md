@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.2.0...v1.2.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* changed databricks provider version ([133be49](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/133be49b47513fd1b0a45ce9b8c1f7419cd77dcf))
+* update databricks catalog bindings and provider version ([d6c41e4](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/d6c41e427c067683d8e3038b2e14c4a1f6695afe))
+
 # [1.2.0](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.1.1...v1.2.0) (2024-03-14)
 
 
