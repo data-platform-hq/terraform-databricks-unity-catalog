@@ -70,13 +70,13 @@ module "unity_catalog" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
-| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >=1.38.0 |
+| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | ~>1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | >=1.38.0 |
+| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | ~>1.0 |
 
 ## Modules
 
@@ -87,19 +87,19 @@ No modules.
 | Name | Type |
 |------|------|
 | [databricks_catalog.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/catalog) | resource |
-| [databricks_catalog_workspace_binding.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/catalog_workspace_binding) | resource |
 | [databricks_grants.catalog](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_grants.metastore](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_grants.schema](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 | [databricks_schema.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/schema) | resource |
+| [databricks_workspace_binding.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/workspace_binding) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_catalog"></a> [catalog](#input\_catalog) | Map of catalog name and its parameters | <pre>map(object({<br>    catalog_grants         = optional(map(list(string)))<br>    catalog_owner          = optional(string)         # Username/groupname/sp application_id of the catalog owner.<br>    catalog_storage_root   = optional(string)         # Location in cloud storage where data for managed tables will be stored<br>    catalog_isolation_mode = optional(string, "OPEN") # Whether the catalog is accessible from all workspaces or a specific set of workspaces. Can be ISOLATED or OPEN.<br>    catalog_comment        = optional(string)         # User-supplied free-form text<br>    catalog_properties     = optional(map(string))    # Extensible Catalog Tags.<br>    schema_name            = optional(list(string))   # List of Schema names relative to parent catalog.<br>    schema_grants          = optional(map(list(string)))<br>    schema_owner           = optional(string) # Username/groupname/sp application_id of the schema owner.<br>    schema_comment         = optional(string)<br>    schema_properties      = optional(map(string))<br>  }))</pre> | `{}` | no |
-| <a name="input_isolated_unmanaged_catalog_bindings"></a> [isolated\_unmanaged\_catalog\_bindings](#input\_isolated\_unmanaged\_catalog\_bindings) | List of objects with parameters to configure Catalog Bindings | <pre>list(object({<br>    catalog_name = string                                      # Name of ISOLATED catalog<br>    binding_type = optional(string, "BINDING_TYPE_READ_WRITE") # Binding mode. Possible values are BINDING_TYPE_READ_ONLY, BINDING_TYPE_READ_WRITE<br>  }))</pre> | `[]` | no |
-| <a name="input_metastore_grants"></a> [metastore\_grants](#input\_metastore\_grants) | Permissions to give on metastore to user, group or service principal | <pre>set(object({<br>    principal  = string<br>    privileges = list(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_catalog"></a> [catalog](#input\_catalog) | Map of catalog name and its parameters | <pre>map(object({<br/>    catalog_grants         = optional(map(list(string)))<br/>    catalog_owner          = optional(string)         # Username/groupname/sp application_id of the catalog owner.<br/>    catalog_storage_root   = optional(string)         # Location in cloud storage where data for managed tables will be stored<br/>    catalog_isolation_mode = optional(string, "OPEN") # Whether the catalog is accessible from all workspaces or a specific set of workspaces. Can be ISOLATED or OPEN.<br/>    catalog_comment        = optional(string)         # User-supplied free-form text<br/>    catalog_properties     = optional(map(string))    # Extensible Catalog Tags.<br/>    schema_name            = optional(list(string))   # List of Schema names relative to parent catalog.<br/>    schema_grants          = optional(map(list(string)))<br/>    schema_owner           = optional(string) # Username/groupname/sp application_id of the schema owner.<br/>    schema_comment         = optional(string)<br/>    schema_properties      = optional(map(string))<br/>  }))</pre> | `{}` | no |
+| <a name="input_isolated_unmanaged_catalog_bindings"></a> [isolated\_unmanaged\_catalog\_bindings](#input\_isolated\_unmanaged\_catalog\_bindings) | List of objects with parameters to configure Catalog Bindings | <pre>list(object({<br/>    catalog_name = string                                      # Name of ISOLATED catalog<br/>    binding_type = optional(string, "BINDING_TYPE_READ_WRITE") # Binding mode. Possible values are BINDING_TYPE_READ_ONLY, BINDING_TYPE_READ_WRITE<br/>  }))</pre> | `[]` | no |
+| <a name="input_metastore_grants"></a> [metastore\_grants](#input\_metastore\_grants) | Permissions to give on metastore to user, group or service principal | <pre>set(object({<br/>    principal  = string<br/>    privileges = list(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_metastore_id"></a> [metastore\_id](#input\_metastore\_id) | Unity Catalog Metastore Id that is located in separate environment. Provide this value to associate Databricks Workspace with target Metastore | `string` | n/a | yes |
 | <a name="input_workspace_id"></a> [workspace\_id](#input\_workspace\_id) | ID of the target workspace. | `string` | `null` | no |
 

@@ -103,7 +103,7 @@ resource "databricks_grants" "schema" {
 }
 
 # ISOLATED Catalogs binding
-resource "databricks_catalog_workspace_binding" "this" {
+resource "databricks_workspace_binding" "this" {
   for_each = {
     for object in var.isolated_unmanaged_catalog_bindings : object.catalog_name => object
   }
