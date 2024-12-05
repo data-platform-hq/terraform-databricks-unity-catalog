@@ -62,20 +62,6 @@ locals {
   ]
 }
 
-# Prerequisite module.
-# NOTE! It is required to assign Metastore to Workspace before creating Unity Catalog resources.
-module "metastore_assignment" {
-  source  = "data-platform-hq/metastore-assignment/databricks"
-  version = "~> 1.0.0"
-
-  workspace_id = data.databricks_workspace.example.id
-  metastore_id = local.metastore_id
-
-  providers = {
-    databricks = databricks.workspace
-  }
-}
-
 module "unity_catalog" {
   source  = "data-platform/unity-catalog/databricks"
   version = "~> 2.0.0"
