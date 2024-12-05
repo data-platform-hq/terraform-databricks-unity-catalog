@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.2.1...v1.3.0) (2024-12-05)
+
+
+### Features
+
+* refactor ([d1f4a59](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/d1f4a5944ba3920b6a406e7ddaac3b3893594eac))
+
 ## [1.2.1](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.2.0...v1.2.1) (2024-11-15)
 
 
