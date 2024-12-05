@@ -17,21 +17,49 @@ provider "databricks" {
 }
 
 locals {
-  metastore_id = "10000000-0000-0000-0000-0000000000"
-  
-  metastore_grants = [
-    { principal = "<user1@email.com>", privileges = ["CREATE_CATALOG","CREATE_EXTERNAL_LOCATION"] }, 
-    { principal = "<user2@epam.com>", privileges = ["CREATE_SHARE", "CREATE_RECIPIENT", "CREATE_PROVIDER"] }
+  catalog_config = [
+
+    # Catalog w/o grants
+    {
+      catalog_name = "catalog_with_no_grants"
+    },
+
+    # Catalog with grants
+    {
+      catalog_name = "catalog_with_grants"
+      catalog_grants = [
+        { principal = "account users", privileges = ["USE_CATALOG", "APPLY_TAG", "CREATE_SCHEMA", "SELECT"] }
+      ]
+    },
+
+    # Catalog with grants and schemas
+    {
+      catalog_name = "catalog_with_schemas"
+      catalog_grants = [{ principal = "account users", privileges = ["USE_CATALOG", "APPLY_TAG", "SELECT"] }]
+      schema_configs = [
+        { schema_name = "schema_01" },
+        { schema_name = "schema_02" }
+      ]
+    },
+
+    # Catalog with schemas where 'schema_01' and 'schema_02' have a default set of grants from 'schema_default_grants' parameter
+    # and 'schema_03' has its own set of grants managed with 'schema_custom_grants' parameter
+    {
+      catalog_name = "catalog_custom_schema_grants"
+      catalog_grants = [{ principal = "account users", privileges = ["USE_CATALOG", "APPLY_TAG"] }]
+      schema_default_grants = [{ principal = "account users", privileges = ["CREATE_TABLE", "SELECT"] }]
+      schema_configs = [
+        { schema_name = "schema_01" },
+        { schema_name = "schema_02" },
+        { 
+          schema_name = "schema_03", 
+          schema_custom_grants = [
+            { principal = "account users", privileges = ["CREATE_VOLUME", "READ_VOLUME", "WRITE_VOLUME", "SELECT"] },
+          ]
+        },
+      ]
+    },
   ]
-  
-  catalog = {
-    example_catalog = {
-      catalog_grants = {
-        "example@username.com" = ["USE_CATALOG", "USE_SCHEMA", "CREATE_SCHEMA", "CREATE_TABLE", "SELECT", "MODIFY"]
-      }
-      schema_name = ["raw", "refined", "data_product"]
-    }
-  }
 }
 
 # Prerequisite module.
@@ -50,12 +78,9 @@ module "metastore_assignment" {
 
 module "unity_catalog" {
   source  = "data-platform/unity-catalog/databricks"
-  version = "~> 1.1.0"
+  version = "~> 2.0.0"
 
-  env              = "example"
-  metastore_id     = local.metastore_id
-  metastore_grants = local.metastore_grants
-  catalog          = local.catalog
+  catalog_config = local.catalog_config
 
   providers = {
     databricks = databricks.workspace
