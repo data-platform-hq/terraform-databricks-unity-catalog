@@ -1,30 +1,21 @@
-# Metastore grants
 locals {
-  mapped_metastore_grants = {
-    for object in var.metastore_grants : object.principal => object
-    if object.principal != null
-  }
-}
+  catalogs_config_mapped = { for object in var.catalog_config : object.catalog_name => object }
 
-resource "databricks_grants" "metastore" {
-  count = length(local.mapped_metastore_grants) != 0 ? 1 : 0
-
-  metastore = var.metastore_id
-  dynamic "grant" {
-    for_each = local.mapped_metastore_grants
-    content {
-      principal  = grant.value.principal
-      privileges = grant.value.privileges
-    }
+  schemas_config_mapped = {
+    for config in flatten([for object in var.catalog_config : [for schema in object.schema_configs : {
+      catalog       = object.catalog_name
+      schema        = schema.schema_name
+      schema_owner  = schema.schema_owner
+      schema_grants = try(coalescelist(schema.schema_custom_grants, object.schema_default_grants), [])
+    }]]) : "${config.catalog}:${config.schema}" => config
   }
 }
 
 # Catalog creation
 resource "databricks_catalog" "this" {
-  for_each = var.catalog
+  for_each = local.catalogs_config_mapped
 
-  metastore_id   = var.metastore_id
-  name           = each.key
+  name           = each.value.catalog_name
   owner          = each.value.catalog_owner
   storage_root   = each.value.catalog_storage_root
   isolation_mode = each.value.catalog_isolation_mode
@@ -35,78 +26,49 @@ resource "databricks_catalog" "this" {
 
 # Catalog grants
 resource "databricks_grants" "catalog" {
-  for_each = {
-    for name, params in var.catalog : name => params.catalog_grants
-    if params.catalog_grants != null
-  }
+  for_each = { for k, v in local.catalogs_config_mapped : k => v if length(v.catalog_grants) != 0 }
 
   catalog = databricks_catalog.this[each.key].name
+
   dynamic "grant" {
-    for_each = each.value
+    for_each = each.value.catalog_grants
     content {
-      principal  = grant.key
-      privileges = grant.value
+      principal  = grant.value.principal
+      privileges = grant.value.privileges
     }
   }
 }
 
 # Schema creation
-locals {
-  schema = flatten([
-    for catalog, params in var.catalog : [
-      for schema in params.schema_name : {
-        catalog    = catalog,
-        schema     = schema,
-        comment    = lookup(params, "schema_comment", "default comment"),
-        properties = lookup(params, "schema_properties", {})
-        owner      = lookup(params, "schema_owner", null)
-      }
-    ] if params.schema_name != null
-  ])
-}
-
 resource "databricks_schema" "this" {
-  for_each = {
-    for entry in local.schema : "${entry.catalog}.${entry.schema}" => entry
-  }
+  for_each = local.schemas_config_mapped
 
   catalog_name  = databricks_catalog.this[each.value.catalog].name
   name          = each.value.schema
-  owner         = each.value.owner
-  comment       = each.value.comment
-  properties    = each.value.properties
+  owner         = each.value.schema_owner
+  comment       = each.value.schema_comment
+  properties    = each.value.schema_properties
   force_destroy = true
 }
 
 # Schema grants
-locals {
-  schema_grants = flatten([
-    for catalog, params in var.catalog : [for schema in params.schema_name : [for principal in flatten(keys(params.schema_grants)) : {
-      catalog    = catalog,
-      schema     = schema,
-      principal  = principal,
-      permission = flatten(values(params.schema_grants)),
-    }]] if params.schema_grants != null
-  ])
-}
-
 resource "databricks_grants" "schema" {
-  for_each = {
-    for entry in local.schema_grants : "${entry.catalog}.${entry.schema}.${entry.principal}" => entry
-  }
+  for_each = { for k, v in local.schemas_config_mapped : k => v if length(v.schema_grants) != 0 }
 
-  schema = databricks_schema.this["${each.value.catalog}.${each.value.schema}"].id
-  grant {
-    principal  = each.value.principal
-    privileges = each.value.permission
+  schema = databricks_schema.this[each.key].id
+
+  dynamic "grant" {
+    for_each = each.value.schema_grants
+    content {
+      principal  = grant.value.principal
+      privileges = grant.value.privileges
+    }
   }
 }
 
 # ISOLATED Catalogs binding
 resource "databricks_workspace_binding" "this" {
-  for_each = {
-    for object in var.isolated_unmanaged_catalog_bindings : object.catalog_name => object
-  }
+  for_each = { for object in var.isolated_unmanaged_catalog_bindings : object.catalog_name => object }
 
   workspace_id   = var.workspace_id
   securable_name = each.value.catalog_name
