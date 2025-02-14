@@ -3,10 +3,12 @@ locals {
 
   schemas_config_mapped = {
     for config in flatten([for object in var.catalog_config : [for schema in object.schema_configs : {
-      catalog       = object.catalog_name
-      schema        = schema.schema_name
-      schema_owner  = schema.schema_owner
-      schema_grants = try(coalescelist(schema.schema_custom_grants, object.schema_default_grants), [])
+      catalog           = object.catalog_name
+      schema            = schema.schema_name
+      schema_owner      = schema.schema_owner
+      schema_grants     = try(coalescelist(schema.schema_custom_grants, object.schema_default_grants), [])
+      schema_comment    = schema.schema_comment
+      schema_properties = schema.schema_properties
     }]]) : "${config.catalog}:${config.schema}" => config
   }
 }
