@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.3.0...v1.3.1) (2025-02-17)
+
+
+### Bug Fixes
+
+* map unmapped schema properties ([ff2752c](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/commit/ff2752c48eef70ed81d6a6f6b4661d9df2d40005))
+
 # [1.3.0](https://github.com/data-platform-hq/terraform-databricks-unity-catalog/compare/v1.2.1...v1.3.0) (2024-12-05)
 
 
